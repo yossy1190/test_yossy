@@ -17,27 +17,26 @@
         
     <script>
         //検索ワード欄が空欄だったらalertを出す
-        function empty_alert(){
-            if(document.getElementById("search_word").value===""){
-                alert("空欄に文字を入力してください")
-            }
-        }
         
-        function AddWordToTextarea(){
-            var AddedWord=document.getElementById("search_word").value;
-            document.getElementById("search_result").value += AddedWord  + "\n";
-        }
-        
-            
-    
-    
     </script>
+    
     <script type="text/javascript" src=./eel.js></script> 
     <script>   
         async function run(){
             let val=await eel.python_function2("hello")();
             console.log(val+" "+"from Python")
+        }  
+        run();
+        function empty_alert(){
+            if(document.getElementById("search_word").value===""){
+                alert("空欄に文字を入力してください")
+            }
         }
+        async function AddWordToTextarea(){
+            let val=await eel.python_function2("hello")();
+            document.getElementById("search_result").value += val  + "\n";
+        }
+        
     </script>
 </body>
 </html>
