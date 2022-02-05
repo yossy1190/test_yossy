@@ -1,0 +1,48 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Eel</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <span>検索ワード</span>
+    <!--検索ワード入力欄-->
+    <input type="text" id="search_word">
+    
+    <!--検索ボタン onclickで「クリックされたら、指定の関数を実行」-->
+    <button onclick=empty_alert();addWordToTextarea()>検索</button>
+    
+    <!--<button onclick=eel.python_function()>テスト</button>-->
+    <div>
+        <textarea class="search_result" placeholder="ここに検索結果が表示されます" display:block></textarea>
+        </div>
+        
+        <script type="text/javascript" src=./eel.js></script> 
+        <script>
+          //検索ワード欄が空欄だったらalertを出す
+    
+        function empty_alert(){
+            if(document.getElementById("search_word").value===""){
+                alert("空欄に文字を入力してください")
+            }
+        }
+        function addWordToTextarea(){
+            var AddedWord=document.getElementById("search_word").value;
+            }
+        window.addEventListener('DOMContentLoaded', () => {      
+            document.getElementById("search_result").value += AddedWord  + "\n";
+        })
+
+    <!--空欄だった場合の処理-->
+    /*
+    async function run(){
+        let val=await eel.kimetsu_search("a")();
+        console.log(val+" "+"from Python")
+    }
+    run();
+    */
+
+    </script>
+    <!--検索結果表示欄 -->
+</body>
+</html>
