@@ -1,12 +1,16 @@
+
+from ast import Num
+import csv
+
 ### 商品クラス
-
-
 class Item:
 
     def __init__(self,item_code,item_name,price):
         self.item_code=item_code
         self.item_name=item_name
         self.price=price
+        # self.num=num
+
 
     def getitem_code(self):
         return self.item_code
@@ -14,50 +18,67 @@ class Item:
 ### オーダークラス
 class Order:
     # コンストラクタ　
+    # item_mastersの中には、CSVで読み込んだ、code,name,priceが入る
     def __init__(self,item_masters):
         self.item_order_list=[]
+        self.item_amount_list=[]
         self.item_masters=item_masters
-    
 
-        
-   
+
     def print_order_item(self,item_code):
         # インスタンスのitem_mastersから、１つずつ値を取り出し、引数の商品コードと符合する商品を探す。
         # その商品の、ID・名前・価格をprintメソッドで表示させる。
         for master in self.item_masters:
             if item_code==master.item_code:
-                print("商品コード:{},商品名:{},価格:{}".format(master.item_code,master.item_name,master.price))
+                print(f"商品コード:{master.item_code},商品名:{master.item_name},価格:{master.price}")
+            for amount in self.item_amount_list:
+                print(f"個数:{amount}")
 
+    # def print_order_amount(self,item_code):
+    #     for amount in self.item_masters:
+    #         if item_code==master.item_code:
 
+   
+                
+    def add_order_list(self):
+        # item_order_listにinputの内容を格納していく。
+        while True:
+            val=input("商品コードを入力(001～999)。Enterのみで精算します。>>>") 
+            if val:
+                self.item_order_list.append(val)
+                num=input("商品個数はいくつですか？>>>")        
+                self.item_amount_list.append(num)           
+            else:
+                break
+        for item in self.item_order_list:
+            self.print_order_item(item)
+
+                        
+    
 ### メイン処理　関数main
 def main():
-
-    # この店の商品(item)一覧情報をここで取り込み。
-    # ここではまだorderクラスはインスタンス化していない。
-    item_masters=[]
-    item_masters.append(Item("001","りんご",100))
-    item_masters.append(Item("002","なし",120))
-    item_masters.append(Item("003","みかん",150))
+    
+    # マスター登録。二次元配列用の箱を準備
+    items_in=[]
+    
+    # csvファイルのデータを読み取る。変数listsとして呼び出し可能にしておく。
+    # headerが邪魔なので、２行目から読み取る
+    # 変数listsから値を取り出し変数itemに格納。二次元配列items_inにリストとしてappendしていく。
+    # for文で、インスタンス化を繰り返し処理する。
+    with open("item.csv","r",encoding="Shift-JIS") as lists:
+        header=next(csv.reader(lists))
+        for list in csv.reader(lists):
+            items_in.append(list)
+    item_masters=[]    
+    for item_in in items_in:
+        item_masters.append(Item(*item_in))
 
     # orderクラスをインスタンス化。Order_Item_Infoメソッドを使えるようにする。
-    # 商品コードを引数入力したら、ID・名前・価格をprintメソッドで表示させる。
+    # order_listへの追加は、Orderクラスにメソッドとして記入。mainでは、メソッド呼び出しのみにする。
     order=Order(item_masters)
+    order.add_order_list()
     
-    #買い物かご(order_lists)を作成
-    #inputによりコンソール画面で、商品コードを入力させる。
-    # while文を使って、注文したものをappendし続ける。
-    order_lists=[]
-    while True:
-        val=input("商品コードを入力(001～999)。Enterのみで精算します。:")
-        if val:
-            order_lists.append(val)
-        else:
-            break
-    
-    #order_listsをfor文で回して、inputで入力させた商品コードを変数itemに代入。
-    #変数itemを、print_order_itemメソッドに当てる。
-    for item in order_lists:
-        order.print_order_item(item)
+
     
 if __name__ == "__main__":
     main()
